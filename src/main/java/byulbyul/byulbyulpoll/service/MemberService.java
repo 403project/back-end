@@ -18,7 +18,8 @@ public class MemberService {
 
     @Transactional
     public void signUp(MemberDto memberDto) {
-        if (isValidEmail(memberDto.getEmail()) && isValidNickname(memberDto.getNickname())) {
+        if (isValidEmail(memberDto.getEmail()) && isValidNickname(memberDto.getNickname())
+                && isValidBirthYear(memberDto.getBirthYear()) && isValidPassword(memberDto.getPassword())) {
             memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
             memberRepository.save(memberDto.toEntity());
         }
@@ -35,11 +36,25 @@ public class MemberService {
     }
 
     public boolean isValidNickname(String nickname) {
-        if (nickname.length() < 2 || nickname.length() > 12) {
-            throw new IllegalArgumentException("닉네임은 2자 이상 12자 이하로 입력해주세요.");
+        if (nickname.length() < 2 || nickname.length() > 8) {
+            throw new IllegalArgumentException("닉네임은 2자 이상 8자 이하로 입력해주세요.");
         }
         if (memberRepository.existsByNickname(nickname)) {
             throw new IllegalArgumentException("닉네임이 이미 존재합니다.");
+        }
+        return true;
+    }
+
+    public boolean isValidBirthYear(int birthYear) {
+        if (birthYear < 1924 || birthYear > 2009) {
+            throw new IllegalArgumentException("가입이 가능한 나이가 아닙니다.");
+        }
+        return true;
+    }
+
+    public boolean isValidPassword(String password) {
+        if (password.length() < 6 || password.length() > 15) {
+            throw new IllegalArgumentException("비밀번호는 6자 이상 15자 이하로 입력해주세요.");
         }
         return true;
     }

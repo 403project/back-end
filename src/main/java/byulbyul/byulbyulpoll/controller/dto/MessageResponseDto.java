@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MessageDto {
+public class MessageResponseDto {
     private boolean success;
     private String message;
 }

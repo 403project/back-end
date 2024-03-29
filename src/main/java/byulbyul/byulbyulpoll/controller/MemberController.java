@@ -1,14 +1,15 @@
 package byulbyul.byulbyulpoll.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import byulbyul.byulbyulpoll.controller.dto.MemberLoginDto;
+import byulbyul.byulbyulpoll.controller.dto.MemberLoginRequestDto;
 import byulbyul.byulbyulpoll.controller.dto.MemberRequestDto;
-import byulbyul.byulbyulpoll.controller.dto.MessageDto;
+import byulbyul.byulbyulpoll.controller.dto.MessageResponseDto;
 import byulbyul.byulbyulpoll.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,10 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @Operation(summary = "이메일 중복 확인")
     @GetMapping("/unique-email")
-    public MessageDto isUniqueEmail(@RequestParam String email) {
-        MessageDto response = new MessageDto();
+    public MessageResponseDto isUniqueEmail(@RequestParam String email) {
+        MessageResponseDto response = new MessageResponseDto();
         try {
             memberService.isValidEmail(email);
             response.setSuccess(true);
@@ -33,9 +35,10 @@ public class MemberController {
         return response;
     }
 
+    @Operation(summary = "닉네임 중복 확인")
     @GetMapping("/unique-nickname")
-    public MessageDto isUniqueNickname(@RequestParam String nickname) {
-        MessageDto response = new MessageDto();
+    public MessageResponseDto isUniqueNickname(@RequestParam String nickname) {
+        MessageResponseDto response = new MessageResponseDto();
         try {
             memberService.isValidNickname(nickname);
             response.setSuccess(true);
@@ -46,9 +49,10 @@ public class MemberController {
         return response;
     }
 
+    @Operation(summary = "회원가입")
     @PostMapping("/sign-up")
-    public MessageDto signUp(@RequestBody MemberRequestDto memberRequestDto) {
-        MessageDto response = new MessageDto();
+    public MessageResponseDto signUp(@RequestBody MemberRequestDto memberRequestDto) {
+        MessageResponseDto response = new MessageResponseDto();
         try {
             memberService.signUp(memberRequestDto.toDto());
             response.setSuccess(true);
@@ -60,11 +64,12 @@ public class MemberController {
         return response;
     }
 
+    @Operation(summary = "로그인")
     @PostMapping("/login")
-    public MessageDto login(@RequestBody MemberLoginDto memberLoginDto, HttpSession session) {
-        MessageDto response = new MessageDto();
+    public MessageResponseDto login(@RequestBody MemberLoginRequestDto memberLoginRequestDto, HttpSession session) {
+        MessageResponseDto response = new MessageResponseDto();
         try {
-            memberService.login(memberLoginDto.getEmail(), memberLoginDto.getPassword(), session);
+            memberService.login(memberLoginRequestDto.getEmail(), memberLoginRequestDto.getPassword(), session);
             response.setSuccess(true);
             response.setMessage("로그인에 성공했습니다.");
         } catch (IllegalArgumentException e) {
