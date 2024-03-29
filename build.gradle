@@ -11,6 +11,12 @@ java {
 	sourceCompatibility = '21'
 }
 
+jar {
+	// 기본 Jar 태스크를 비활성화합니다.
+	enabled = false
+}
+
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor

@@ -1,0 +1,66 @@
+name: Docker Spring NCP
+
+on:
+  push:
+    branches: ["main", "feat/ncloud"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build_dockerpush:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create .env file
+        run: |
+          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+
+      - name: Upload .env to Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: env-file
+          path: .env
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to NCP Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.NCP_CONTAINER_REGISTRY }}
+          username: ${{ secrets.NCP_ACCESS_KEY }}
+          password: ${{ secrets.NCP_SECRET_KEY }}
+
+      - name: build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:latest
+          cache-from: type=registry,ref=${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name:latest
+          cache-to: type=inline
+
+  pull_deploy:
+    name: Connect server ssh and pull from container registry
+    needs: build_dockerpush
+    runs-on: ubuntu-latest
+    steps:
+      - name: connect ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOYMENT_HOST }}
+          username: ${{ secrets.DEPLOYMENT_USERNAME }}
+          password: ${{ secrets.DEPLOYMENT_PASSWORD }}
+          port: ${{ secrets.DEPLOYMENT_PORT }}
+          script: |
+            docker login -u ${{ secrets.NCP_ACCESS_KEY }} --password-stdin ${{ secrets.NCP_SECRET_KEY }} ${{ secrets.NCP_CONTAINER_REGISTRY }}
+            docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
+            docker stop $(docker ps -a -q)
+            docker rm $(docker ps -a -q)
+            docker run -d -p 8080:8080 ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
+            docker image prune -f
