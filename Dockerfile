@@ -10,7 +10,6 @@ RUN chmod +x gradlew
 RUN ./gradlew clean build
 
 # CMD ["./gradlew", "clean", "build"]
-RUN ls ./build -R
 # Assuming build is successful, copy the JAR file to the root
 ARG JAR_FILE=./build/libs/*.jar
 RUN cp ${JAR_FILE} /app.jar
