@@ -22,4 +22,6 @@ public class Project {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectImage> projectImageList;
+
+    private int upvote;
 }
