@@ -2,11 +2,16 @@ package byulbyul.byulbyulpoll.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 
     @Id
@@ -21,4 +26,5 @@ public class Member {
     private Integer birthYear;
 
     private String occupation;
+
 }

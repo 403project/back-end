@@ -1,20 +1,17 @@
 package byulbyul.byulbyulpoll.entity;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class Vote {
     @Id
     private long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Project project;
 
     private boolean isMember;
@@ -24,5 +21,11 @@ public class Vote {
 
     @OneToOne(fetch = FetchType.LAZY)
     private NonMember nonMember;
+
+    private Integer ageType;
+
+    private String gender;
+
+    private String occupation;
 
 }
