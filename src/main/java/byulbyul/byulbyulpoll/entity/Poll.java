@@ -19,4 +19,14 @@ public class Poll {
     private LocalDateTime startDate;
 
     private LocalDateTime endDate;
+
+    public Poll(String title, LocalDateTime startDate, LocalDateTime endDate) {
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public Poll() {
+
+    }
 }

@@ -24,4 +24,18 @@ public class Project {
     private List<ProjectImage> projectImageList;
 
     private int upvote;
+
+    public Project(long pollId, String title, String description) {
+        this.id = pollId;
+        this.title = title;
+        this.description = description;
+    }
+
+    public Project() {
+
+    }
+
+    public void upvote() {
+        this.upvote++;
+    }
 }
