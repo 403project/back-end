@@ -1,6 +1,7 @@
 package byulbyul.byulbyulpoll.controller;
 
 import byulbyul.byulbyulpoll.controller.dto.MessageResponseDto;
+import byulbyul.byulbyulpoll.controller.dto.ProjectResponseDto;
 import byulbyul.byulbyulpoll.service.ProjectService;
 import byulbyul.byulbyulpoll.service.dto.NewProjectDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,4 +30,12 @@ public class ProjectController {
         }
         return response;
     }
+
+    @GetMapping("/{projectId}")
+    @Operation(summary = "프로젝트 조회")
+    public ProjectResponseDto getProject(@PathVariable long projectId){
+        var project = projectService.getProject(projectId);
+        return new ProjectResponseDto(project.getId(), project.getTitle(), project.getDescription(), project.getVoteCount());
+    }
+
 }

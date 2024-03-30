@@ -7,6 +7,7 @@ import byulbyul.byulbyulpoll.repository.PollRepository;
 import byulbyul.byulbyulpoll.repository.ProjectRepository;
 import byulbyul.byulbyulpoll.service.dto.NewProjectDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public class ProjectService {
     }
 
     public List<Project> getProjects(long pollId){
-        return projectRepository.findByPollId(pollId);
+        return projectRepository.findByPollId(pollId, Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public Project getProject(long projectId){
