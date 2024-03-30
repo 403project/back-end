@@ -17,7 +17,8 @@ RUN cp ${JAR_FILE} /app.jar
 # Expose the application's port
 FROM openjdk:21-slim
 COPY --from=build /app.jar /app.jar 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+COPY --from=build /src /src 
+ENTRYPOINT ["java", "-jar", "/app.jar", "--spring.profiles.active=real"]
 
 EXPOSE 8080
 
