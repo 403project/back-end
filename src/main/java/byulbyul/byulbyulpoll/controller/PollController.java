@@ -10,6 +10,7 @@ import byulbyul.byulbyulpoll.service.ProjectService;
 import byulbyul.byulbyulpoll.service.VoteService;
 import byulbyul.byulbyulpoll.service.dto.NewProjectDto;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +67,6 @@ public class PollController {
     public MessageResponseDto vote(@RequestParam long projectId,
                                    @SessionAttribute(name = "member", required = false) Member member) {
         MessageResponseDto response = new MessageResponseDto();
-
         if (member == null) {
             response.setSuccess(false);
             response.setMessage("로그인이 필요합니다. (비회원 투표 개발중)");

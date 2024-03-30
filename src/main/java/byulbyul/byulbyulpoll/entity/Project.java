@@ -40,4 +40,11 @@ public class Project {
     public void upvote() {
         this.voteCount++;
     }
+
+    public void cancleUpvote() {
+        this.voteCount--;
+        if (this.voteCount < 0 ){
+            this.voteCount = 0;
+        }
+    }
 }
