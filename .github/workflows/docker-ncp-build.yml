@@ -77,7 +77,21 @@ jobs:
           script: |
             docker login -u ${{ secrets.NCP_ACCESS_KEY }} -p ${{ secrets.NCP_SECRET_KEY }} ${{ secrets.NCP_CONTAINER_REGISTRY }}
             docker pull ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
-            docker stop $(docker ps -a -q)
-            docker rm $(docker ps -a -q)
-            docker run -d -p 8080:8080 ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
+            # 이미지 이름으로 실행 중인 컨테이너 ID를 찾기
+            CONTAINER_IDS=$(docker ps -q --filter label=app=spring)
+
+            # 찾은 컨테이너 종료
+            if [ ! -z "$CONTAINER_IDS" ]; then
+                docker stop $CONTAINER_IDS
+            fi
+
+            # 찾은 컨테이너 삭제
+            if [ ! -z "$CONTAINER_IDS" ]; then
+                docker rm $CONTAINER_IDS
+            fi
+
+            # 이미지 실행
+            docker run -d -p 8080:8080 --label app=spring ${{ secrets.NCP_CONTAINER_REGISTRY }}/tag-name
+
+            # 사용하지 않는 이미지 정리
             docker image prune -f
