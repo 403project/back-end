@@ -10,12 +10,14 @@ public class ProjectResponseDto {
     private String title;
     private String description;
     private int voteCount;
+    private List<String> imageUrls;
 
 
-    public ProjectResponseDto(Long id, String title, String description, int voteCount){
+    public ProjectResponseDto(Long id, String title, String description, int voteCount, List<String> imageUrls){
         this.id = id;
         this.title = title;
         this.description = description;
         this.voteCount = voteCount;
+        this.imageUrls = imageUrls;
     }
 }
