@@ -23,6 +23,9 @@ public class ProjectService {
     @Transactional
     public long createProject(NewProjectDto newprojectDto){
         var poll = pollRepository.findById(newprojectDto.getPollId()).orElseThrow(() -> new IllegalArgumentException("해당 투표가 존재하지 않습니다."));
+        projectRepository.findByTitle(newprojectDto.getTitle()).ifPresent(project -> {
+            throw new IllegalArgumentException("이미 존재하는 프로젝트 제목입니다.");
+        });
         Project project = new Project(poll, newprojectDto.getDescription(), newprojectDto.getTitle());
         projectRepository.save(project);
         return project.getId();
