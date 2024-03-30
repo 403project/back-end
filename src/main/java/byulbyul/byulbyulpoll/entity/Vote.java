@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @Setter
 public class Vote {
     @Id
-    private long id;
+    @GeneratedValue
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
@@ -42,6 +43,10 @@ public class Vote {
         this.gender = gender;
         this.occupation = occupation;
         this.poll = poll;
+    }
+
+    public Vote() {
+
     }
 
     public static Vote voteByMember(Project project, Member member){

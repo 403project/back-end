@@ -7,10 +7,11 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Like {
+public class Likes {
 
     @Id
-    long id;
+    @GeneratedValue
+    Long id;
 
     @ManyToOne
     private Project project;

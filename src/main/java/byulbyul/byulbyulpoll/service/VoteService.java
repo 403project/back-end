@@ -9,6 +9,7 @@ import byulbyul.byulbyulpoll.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,8 +24,8 @@ public class VoteService {
         Member member = memberRepository.findByEmail(memberEmail).orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 회원이 존재하지 않습니다."));
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("해당 프로젝트가 존재하지 않습니다."));
 
-        Optional<Vote> voteToCancel = voteRepository.findByMemberAndProject(projectId, memberEmail);
-        voteToCancel.ifPresent(voteRepository::delete);
+        List<Vote> voteToCancel = voteRepository.findByProject_IdAndMember_Email(projectId, memberEmail);
+        voteRepository.deleteAll(voteToCancel);
 
         Vote vote = Vote.voteByMember(project, member);
         voteRepository.save(vote);

@@ -1,5 +1,6 @@
 package byulbyul.byulbyulpoll.service.dto;
 
+import lombok.Setter;
 import org.springframework.lang.NonNull;
 
 import byulbyul.byulbyulpoll.entity.Member;
@@ -10,15 +11,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class MemberDto {
     private String email;
+    @Setter
     private String password;
     private String nickname;
     private String gender;
     private Integer birthYear;
     private String occupation;
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @NonNull
     public Member toEntity() {

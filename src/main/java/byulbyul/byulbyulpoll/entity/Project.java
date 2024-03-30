@@ -11,7 +11,8 @@ import java.util.List;
 public class Project {
 
     @Id
-    private long id;
+    @GeneratedValue
+    private Long id;
 
     @ManyToOne
     private Poll poll;
