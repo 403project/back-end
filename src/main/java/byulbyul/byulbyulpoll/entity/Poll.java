@@ -31,4 +31,10 @@ public class Poll {
     public Poll() {
 
     }
+
+    public boolean isOngoing() {
+        LocalDateTime now = LocalDateTime.now();
+
+        return startDate.isBefore(now) && endDate.isAfter(now);
+    }
 }

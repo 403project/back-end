@@ -24,12 +24,13 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectImage> projectImageList;
 
-    private int upvote;
+    private int voteCount;
 
-    public Project(long pollId, String title, String description) {
-        this.id = pollId;
+    public Project(Poll poll, String title, String description) {
+        this.poll = poll;
         this.title = title;
         this.description = description;
+        this.voteCount = 0;
     }
 
     public Project() {
@@ -37,6 +38,6 @@ public class Project {
     }
 
     public void upvote() {
-        this.upvote++;
+        this.voteCount++;
     }
 }
