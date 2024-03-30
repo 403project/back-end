@@ -2,25 +2,42 @@ name: Docker Spring NCP
 
 on:
   push:
-    branches: ["main", "feat/ncloud"]
-  pull_request:
-    branches: ["main"]
+    branches: ["feat/ncloud"]
 
 jobs:
   build_dockerpush:
     runs-on: ubuntu-latest
     steps:
-      - name: Create .env file
+      - name: Create .application-real.yml
         run: |
-          jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]' <<< "$SECRETS_CONTEXT" > .env
-        env:
-          SECRETS_CONTEXT: ${{ toJson(secrets) }}
+          cat <<EOF > application-real.yml
+          spring:
+            datasource:
+              url: ${{ secrets.DB_URL }}
+              username: ${{ secrets.DB_USERNAME }}
+              password: ${{ secrets.DB_PASSWORD }}
+              driver-class-name: org.postgresql.Driver
 
-      - name: Upload .env to Artifacts
+            jpa:
+              hibernate:
+                ddl-auto: create
+              properties:
+                hibernate:
+                  dialect: org.hibernate.dialect.PostgreSQLDialect
+                  default_schema: starpool
+          EOF
+
+      - name: Upload application-real.yml to Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: env-file
-          path: .env
+          name: application-real
+          path: application-real.yml
+
+      - name: Download application-real.yml Artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: application-real
+          path: ./src/resources
 
       - name: Checkout
         uses: actions/checkout@v2
