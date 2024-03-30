@@ -67,7 +67,7 @@ jobs:
 
       - uses: geekyeggo/delete-artifact@v1
         with:
-          name: setup
+          name: application-real
   pull_deploy:
     name: Connect server ssh and pull from container registry
     needs: build_dockerpush
