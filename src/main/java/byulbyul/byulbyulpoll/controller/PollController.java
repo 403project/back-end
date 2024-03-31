@@ -25,7 +25,7 @@ public class PollController {
     private final VoteService voteService;
 
     @GetMapping
-    @Operation(summary = "투표 목록 조회")
+    @Operation(summary = "투표채널 목록 조회")
     public PollsResponseDto getPolls() {
         var polls = pollService.getPolls();
 
@@ -37,13 +37,13 @@ public class PollController {
     }
 
     @PostMapping
-    @Operation(summary = "투표 생성")
+    @Operation(summary = "투표채널 생성")
     public MessageResponseDto createPoll(@RequestBody PollRequestDto pollRequestDto) {
         MessageResponseDto response = new MessageResponseDto();
         try {
             pollService.createPoll(pollRequestDto.getTitle(), pollRequestDto.getStartDate(), pollRequestDto.getEndDate());
             response.setSuccess(true);
-            response.setMessage("투표 생성에 성공했습니다.");
+            response.setMessage("투표채널 생성에 성공했습니다.");
         } catch (IllegalArgumentException e) {
             response.setSuccess(false);
             response.setMessage(e.getMessage());
@@ -52,12 +52,14 @@ public class PollController {
     }
 
     @GetMapping("/{pollId}")
-    @Operation(summary = "투표 내부의 프로젝트 조회")
+    @Operation(summary = "투표채널 내부의 프로젝트 조회")
     public ProjectsResponseDto getPoll(@PathVariable long pollId) {
         var projects = projectService.getProjects(pollId);
 
         var projectInfoDtos = projects.stream()
-                .map(project -> new ProjectsResponseDto.ProjectInfoDto(project.getId(), project.getTitle(), project.getDescription(), project.getVoteCount()))
+                .map(project -> new ProjectsResponseDto.ProjectInfoDto(
+                        project.getId(), project.getTitle(), project.getDescription(),
+                        project.getVoteCount(), projectService.getFirstProjectImage(project.getId())) )
                 .toArray(ProjectsResponseDto.ProjectInfoDto[]::new);
 
         return new ProjectsResponseDto(projectInfoDtos);
@@ -84,6 +86,7 @@ public class PollController {
         }
         return response;
     }
+
 
 
 }

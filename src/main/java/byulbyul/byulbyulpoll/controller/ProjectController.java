@@ -36,7 +36,8 @@ public class ProjectController {
     public ProjectResponseDto getProject(@PathVariable long projectId){
         var project = projectService.getProject(projectId);
         var imageUrls = projectService.getProjectImages(projectId);
-        return new ProjectResponseDto(project.getId(), project.getTitle(), project.getDescription(), project.getVoteCount(), imageUrls);
+        var tags = projectService.getProjectTags(projectId);
+        return new ProjectResponseDto(project.getId(), project.getTitle(), project.getDescription(), project.getVoteCount(), imageUrls, tags);
     }
 
     @PostMapping("/{projectId}/images")
