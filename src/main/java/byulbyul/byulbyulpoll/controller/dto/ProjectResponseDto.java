@@ -1,0 +1,23 @@
+package byulbyul.byulbyulpoll.controller.dto;
+
+import lombok.Data;
+
+import java.util.List;
+
+@Data
+public class ProjectResponseDto {
+    private Long id;
+    private String title;
+    private String description;
+    private int voteCount;
+    private List<String> imageUrls;
+
+
+    public ProjectResponseDto(Long id, String title, String description, int voteCount, List<String> imageUrls){
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.voteCount = voteCount;
+        this.imageUrls = imageUrls;
+    }
+}
