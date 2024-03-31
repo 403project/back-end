@@ -1,20 +1,19 @@
 package byulbyul.byulbyulpoll.service;
 
-import byulbyul.byulbyulpoll.entity.Member;
-import byulbyul.byulbyulpoll.entity.NonMember;
 import byulbyul.byulbyulpoll.entity.Project;
 import byulbyul.byulbyulpoll.entity.ProjectImage;
 import byulbyul.byulbyulpoll.repository.PollRepository;
 import byulbyul.byulbyulpoll.repository.ProjectImageRepository;
 import byulbyul.byulbyulpoll.repository.ProjectRepository;
 import byulbyul.byulbyulpoll.service.dto.NewProjectDto;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
@@ -46,15 +45,12 @@ public class ProjectService {
     @Transactional
     public void addProjectImages(long projectId, List<String> imageUrls) {
         var project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("해당 프로젝트가 존재하지 않습니다."));
-        int i = 0;
-        for (String imageUrl : imageUrls) {
-            ProjectImage ProjectImage = new ProjectImage(project, imageUrl, i++);
-            projectImageRepository.save(ProjectImage);
-        }
+        AtomicInteger i = new AtomicInteger();
+        projectImageRepository.saveAll(imageUrls.stream().map(imageUrl -> new ProjectImage(project, imageUrl, i.getAndIncrement())).toList());
     }
 
     public List<String> getProjectImages(long projectId) {
-        return projectImageRepository.findByProjectId(projectId, Sort.by(Sort.Direction.ASC, "order"))
+        return projectImageRepository.findByProjectId(projectId, Sort.by(Sort.Direction.ASC, "imageOrder"))
                 .stream().map(ProjectImage::getImageUrl).toList();
     }
 

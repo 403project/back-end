@@ -22,11 +22,11 @@ public class PollsResponseDto {
         private LocalDateTime startDate;
         private LocalDateTime endDate;
 
-        public PollInfoDto(Long id, String title, boolean ongoing, LocalDateTime startdate, LocalDateTime endDate){
+        public PollInfoDto(Long id, String title, boolean ongoing, LocalDateTime startDate, LocalDateTime endDate){
             this.id = id;
             this.title = title;
             this.ongoing = ongoing;
-            this.startDate  = startdate;
+            this.startDate  = startDate;
             this.endDate = endDate;
         }
 

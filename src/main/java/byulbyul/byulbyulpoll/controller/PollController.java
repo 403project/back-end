@@ -10,6 +10,7 @@ import byulbyul.byulbyulpoll.service.ProjectService;
 import byulbyul.byulbyulpoll.service.VoteService;
 import byulbyul.byulbyulpoll.service.dto.NewProjectDto;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +66,7 @@ public class PollController {
     @GetMapping("/vote")
     @Operation(summary = "투표하기")
     public MessageResponseDto vote(@RequestParam long projectId,
-                                   @SessionAttribute(name = "member", required = false) Member member) {
+                                   @Parameter(hidden = true) @SessionAttribute(name = "member", required = false) Member member) {
         MessageResponseDto response = new MessageResponseDto();
         if (member == null) {
             response.setSuccess(false);

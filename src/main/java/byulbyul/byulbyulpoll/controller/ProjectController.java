@@ -1,15 +1,13 @@
 package byulbyul.byulbyulpoll.controller;
 
+import byulbyul.byulbyulpoll.controller.dto.AttachImageRequestDto;
 import byulbyul.byulbyulpoll.controller.dto.MessageResponseDto;
 import byulbyul.byulbyulpoll.controller.dto.ProjectResponseDto;
 import byulbyul.byulbyulpoll.service.ProjectService;
 import byulbyul.byulbyulpoll.service.dto.NewProjectDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -43,10 +41,10 @@ public class ProjectController {
 
     @PostMapping("/{projectId}/images")
     @Operation(summary = "이미지 첨부")
-    public MessageResponseDto addProjectImages(@PathVariable long projectId, @RequestBody List<String> imageUrls){
+    public MessageResponseDto addProjectImages(@PathVariable long projectId, @RequestBody AttachImageRequestDto requestDto){
         MessageResponseDto response = new MessageResponseDto();
         try {
-            projectService.addProjectImages(projectId, imageUrls);
+            projectService.addProjectImages(projectId, requestDto.getImageUrls());
             response.setSuccess(true);
             response.setMessage("이미지 첨부에 성공했습니다.");
         } catch (IllegalArgumentException e) {
