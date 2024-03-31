@@ -17,12 +17,14 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void signUp(MemberDto memberDto) {
+    public Member signUp(MemberDto memberDto) {
         if (isValidEmail(memberDto.getEmail()) && isValidNickname(memberDto.getNickname())
                 && isValidBirthYear(memberDto.getBirthYear()) && isValidPassword(memberDto.getPassword())) {
             memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
             memberRepository.save(memberDto.toEntity());
+            return memberRepository.findByEmail(memberDto.getEmail()).orElseThrow();
         }
+        return null;
     }
 
     public boolean isValidEmail(String email) {

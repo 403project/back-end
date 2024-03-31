@@ -48,10 +48,11 @@ public class MemberController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/sign-up")
-    public MessageResponseDto signUp(@RequestBody MemberRequestDto memberRequestDto) {
+    public MessageResponseDto signUp(@RequestBody MemberRequestDto memberRequestDto, HttpSession session) {
         MessageResponseDto response = new MessageResponseDto();
         try {
-            memberService.signUp(memberRequestDto.toDto());
+            var member = memberService.signUp(memberRequestDto.toDto());
+            session.setAttribute("member", member);
             response.setSuccess(true);
             response.setMessage("회원가입에 성공했습니다.");
         } catch (IllegalArgumentException e) {

@@ -19,10 +19,10 @@ public class Vote {
 
     private boolean isMember;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     private NonMember nonMember;
 
     private Integer ageType;

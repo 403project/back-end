@@ -20,6 +20,10 @@ public class PollService {
 
     @Transactional
     public long createPoll(String title, LocalDateTime startDate, LocalDateTime endDate) {
+        if(pollRepository.existsByTitle(title)){
+            throw new IllegalArgumentException("이미 존재하는 투표채널 이름입니다.");
+        }
+
         Poll poll = new Poll(title, startDate, endDate);
         pollRepository.save(poll);
         return poll.getId();

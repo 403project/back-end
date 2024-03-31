@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface VoteRepository extends JpaRepository<Vote, Long> {
 
-    List<Vote> findByProject_IdAndMember_Email(Long projectId, String memberEmail);
+    List<Vote> findByPoll_IdAndMember_Email(Long projectId, String memberEmail);
 
 
 }
