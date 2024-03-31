@@ -29,6 +29,9 @@ public class VoteService {
     public long voteByMember(long projectId, String memberEmail){
         Member member = memberRepository.findByEmail(memberEmail).orElseThrow(() -> new IllegalArgumentException("해당 이메일을 가진 회원이 존재하지 않습니다."));
         Project project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalArgumentException("해당 프로젝트가 존재하지 않습니다."));
+        if(!project.getPoll().isOngoing()){
+            throw new IllegalArgumentException("투표 기간이 아닙니다.");
+        }
 
         List<Vote> voteToCancel = voteRepository.findByPoll_IdAndMember_Email(project.getPoll().getId(), memberEmail);
         for (Vote vote : voteToCancel) {

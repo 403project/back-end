@@ -10,4 +10,6 @@ public interface ProjectImageRepository extends JpaRepository<ProjectImage, Long
 
     List<ProjectImage> findByProjectId(Long projectId, Sort sort);
 
+    ProjectImage findFirstByProjectId(Long projectId, Sort sort);
+
 }

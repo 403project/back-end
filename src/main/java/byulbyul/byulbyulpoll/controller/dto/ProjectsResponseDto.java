@@ -16,12 +16,14 @@ public class ProjectsResponseDto {
         private String title;
         private String description;
         private int voteCount;
+        private String repImageUrl;
 
-        public ProjectInfoDto(Long id, String title, String description, int voteCount){
+        public ProjectInfoDto(Long id, String title, String description, int voteCount, String repImageUrl){
             this.id = id;
             this.title = title;
             this.description = description;
             this.voteCount = voteCount;
+            this.repImageUrl = repImageUrl;
         }
 
     }
