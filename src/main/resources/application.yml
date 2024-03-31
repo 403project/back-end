@@ -2,3 +2,8 @@ server:
   servlet:
     session:
       tracking-modes: cookie
+      cookie:
+        name: JSESSIONID
+        http-only: false
+        path: /
+        domain: byulbyul.store
