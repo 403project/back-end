@@ -1,4 +1,4 @@
-name: Docker Spring NCP
+name: Docker Spring NCP With PSQL
 
 on:
   push:
